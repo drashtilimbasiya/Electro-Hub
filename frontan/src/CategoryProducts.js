@@ -4,7 +4,8 @@ import axios from "axios";
 
 import {
     useEffect,
-    useState
+    useState,
+    useCallback
 } from "react";
 
 import {
@@ -22,16 +23,22 @@ function CategoryProducts() {
 
     // ================= GET PRODUCTS =================
 
-    const getProducts = async () => {
+   const getProducts = useCallback(async () => {
 
-        try {
+    try {
 
-            const result = await axios.get(
+        const result = await axios.get(
+            "http://localhost:5000/products"
+        );
 
-                "http://localhost:5000/products"
+        setProducts(result.data);
 
-            );
+    } catch (error) {
 
+        console.log(error);
+    }
+
+}, []);
             // ================= FILTER =================
 
             const filteredProducts =
