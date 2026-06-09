@@ -44,12 +44,13 @@ function ProductDetails() {
         }
     };
 
-    useEffect(() => {
+   useEffect(() => {
 
-        getProduct();
+    getProduct();
 
-    }, []);
+}, [getProduct]);
 
+    
     // ================= ADD TO CART =================
 
     const addToCart = () => {
