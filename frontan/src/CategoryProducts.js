@@ -1,5 +1,4 @@
 import Navbar from "./Navbar";
-
 import axios from "axios";
 
 import {
@@ -16,102 +15,47 @@ import {
 function CategoryProducts() {
 
     const { name } = useParams();
-
     const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
 
-    // ================= GET PRODUCTS =================
+    const getProducts = useCallback(async () => {
 
-   const getProducts = useCallback(async () => {
+        try {
 
-    try {
-
-        const result = await axios.get(
-            "http://localhost:5000/products"
-        );
-
-        const filteredProducts =
-        result.data.filter((item) => {
-
-            if (!item.category) {
-
-                return false;
-            }
-
-            let dbCategory =
-            item.category
-            .toLowerCase()
-            .trim();
-
-            let urlCategory =
-            name
-            .toLowerCase()
-            .trim();
-
-            if (dbCategory.endsWith("s")) {
-
-                dbCategory =
-                dbCategory.slice(0, -1);
-            }
-
-            if (urlCategory.endsWith("s")) {
-
-                urlCategory =
-                urlCategory.slice(0, -1);
-            }
-
-            return dbCategory === urlCategory;
-        });
-
-        setProducts(filteredProducts);
-
-    } catch (error) {
-
-        console.log(error);
-    }
-
-}, [name]);
-            // ================= FILTER =================
+            const result = await axios.get(
+                "http://localhost:5000/products"
+            );
 
             const filteredProducts =
-            result.data.filter((item) => {
+                result.data.filter((item) => {
 
-                if(!item.category){
+                    if (!item.category) {
+                        return false;
+                    }
 
-                    return false;
-                }
+                    let dbCategory =
+                        item.category
+                            .toLowerCase()
+                            .trim();
 
-                // DATABASE CATEGORY
+                    let urlCategory =
+                        name
+                            .toLowerCase()
+                            .trim();
 
-                let dbCategory =
-                item.category
-                .toLowerCase()
-                .trim();
+                    if (dbCategory.endsWith("s")) {
+                        dbCategory =
+                            dbCategory.slice(0, -1);
+                    }
 
-                // URL CATEGORY
+                    if (urlCategory.endsWith("s")) {
+                        urlCategory =
+                            urlCategory.slice(0, -1);
+                    }
 
-                let urlCategory =
-                name
-                .toLowerCase()
-                .trim();
-
-                // REMOVE s
-
-                if(dbCategory.endsWith("s")){
-
-                    dbCategory =
-                    dbCategory.slice(0, -1);
-                }
-
-                if(urlCategory.endsWith("s")){
-
-                    urlCategory =
-                    urlCategory.slice(0, -1);
-                }
-
-                return dbCategory === urlCategory;
-            });
+                    return dbCategory === urlCategory;
+                });
 
             setProducts(filteredProducts);
 
@@ -119,13 +63,14 @@ function CategoryProducts() {
 
             console.log(error);
         }
-    };
 
-   useEffect(() => {
+    }, [name]);
 
-    getProducts();
+    useEffect(() => {
 
-}, [getProducts]);
+        getProducts();
+
+    }, [getProducts]);
 
     return (
 
@@ -136,9 +81,7 @@ function CategoryProducts() {
             <div className="page-container">
 
                 <h1>
-
                     {name.toUpperCase()} Products
-
                 </h1>
 
                 <div className="product-container">
@@ -146,53 +89,41 @@ function CategoryProducts() {
                     {
                         products.length > 0 ?
 
-                        products.map((item) => (
+                            products.map((item) => (
 
-                            <div
-                                className="card"
+                                <div
+                                    className="card"
+                                    key={item._id}
+                                    onClick={() =>
+                                        navigate(`/product/${item._id}`)
+                                    }
+                                >
 
-                                key={item._id}
+                                    <img
+                                        src={item.image}
+                                        alt="product"
+                                    />
 
-                                onClick={() =>
-                                    navigate(
-                                        `/product/${item._id}`
-                                    )
-                                }
+                                    <h3>{item.pname}</h3>
+
+                                    <h4>{item.company}</h4>
+
+                                    <h2>₹ {item.price}</h2>
+
+                                </div>
+
+                            ))
+
+                            :
+
+                            <h1
+                                style={{
+                                    color: "white",
+                                    marginTop: "50px"
+                                }}
                             >
-
-                                <img
-                                    src={item.image}
-                                    alt="product"
-                                />
-
-                                <h3>
-                                    {item.pname}
-                                </h3>
-
-                                <h4>
-                                    {item.company}
-                                </h4>
-
-                                <h2>
-                                    ₹ {item.price}
-                                </h2>
-
-                            </div>
-
-                        ))
-
-                        :
-
-                        <h1
-                        style={{
-                            color:"white",
-                            marginTop:"50px"
-                        }}
-                        >
-
-                            No Products Found
-
-                        </h1>
+                                No Products Found
+                            </h1>
                     }
 
                 </div>
