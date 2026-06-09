@@ -81,11 +81,11 @@ function CategoryProducts() {
         }
     };
 
-    useEffect(() => {
+   useEffect(() => {
 
-        getProducts();
+    getProducts();
 
-    }, [name]);
+}, [getProducts]);
 
     return (
 
