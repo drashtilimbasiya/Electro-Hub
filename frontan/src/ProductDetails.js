@@ -13,7 +13,8 @@ import {
 
 import {
     useEffect,
-    useState
+    useState,
+    useCallback
 } from "react";
 
 function ProductDetails() {
@@ -26,23 +27,22 @@ function ProductDetails() {
 
     // ================= GET PRODUCT =================
 
-    const getProduct = async () => {
+    const getProduct = useCallback(async () => {
 
-        try {
+    try {
 
-            const result = await axios.get(
+        const result = await axios.get(
+            `http://localhost:5000/product/${id}`
+        );
 
-                `http://localhost:5000/product/${id}`
+        setProduct(result.data);
 
-            );
+    } catch (error) {
 
-            setProduct(result.data);
+        console.log(error);
+    }
 
-        } catch (error) {
-
-            console.log(error);
-        }
-    };
+}, [id]);
 
    useEffect(() => {
 
