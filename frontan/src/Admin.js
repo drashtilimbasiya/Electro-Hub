@@ -214,9 +214,9 @@ function Admin() {
                 />
 
 
-                // ===========================
-                // FULL Admin.js CATEGORY INPUT
-                // ===========================
+                    {/* ===========================
+                        FULL Admin.js CATEGORY INPUT
+                =========================== */}
 
                <input
                     type="text"
