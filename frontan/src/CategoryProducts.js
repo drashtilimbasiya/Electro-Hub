@@ -31,14 +31,47 @@ function CategoryProducts() {
             "http://localhost:5000/products"
         );
 
-        setProducts(result.data);
+        const filteredProducts =
+        result.data.filter((item) => {
+
+            if (!item.category) {
+
+                return false;
+            }
+
+            let dbCategory =
+            item.category
+            .toLowerCase()
+            .trim();
+
+            let urlCategory =
+            name
+            .toLowerCase()
+            .trim();
+
+            if (dbCategory.endsWith("s")) {
+
+                dbCategory =
+                dbCategory.slice(0, -1);
+            }
+
+            if (urlCategory.endsWith("s")) {
+
+                urlCategory =
+                urlCategory.slice(0, -1);
+            }
+
+            return dbCategory === urlCategory;
+        });
+
+        setProducts(filteredProducts);
 
     } catch (error) {
 
         console.log(error);
     }
 
-}, []);
+}, [name]);
             // ================= FILTER =================
 
             const filteredProducts =
