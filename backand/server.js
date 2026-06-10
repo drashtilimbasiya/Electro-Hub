@@ -2,6 +2,8 @@
 // FULL server.js
 // ===========================
 
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -13,12 +15,12 @@ app.use(cors());
 
 // ================= DATABASE =================
 
-mongoose.connect("mongodb://127.0.0.1:27017/electronic_store")
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log("MongoDB Connected");
 })
 .catch((err) => {
-    console.log(err);
+    console.log("MongoDB Error:", err);
 });
 
 // ================= USER SCHEMA =================
@@ -347,10 +349,12 @@ app.delete("/deleteproduct/:id", async (req, res) => {
 
 // ================= SERVER =================
 
-app.listen(5000, () => {
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
 
     console.log(
-        "Server Running On Port 5000"
+        `Server Running On Port ${PORT}`
     );
 
 });
